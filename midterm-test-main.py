@@ -12,7 +12,7 @@ from sklearn.preprocessing import LabelEncoder
 # Load the data
 @st.cache_data
 def load_data():
-    file_path = r'/workspaces/blank-app/DataCoSupplyChainDataset.csv'
+    file_path = r'https://github.com/andrew-jxhn/blank-app/blob/main/DataCoSupplyChainDataset.csv'
     df = pd.read_csv(file_path, encoding='latin1')
     df['order date (DateOrders)'] = pd.to_datetime(df['order date (DateOrders)'])
     df['shipping date (DateOrders)'] = pd.to_datetime(df['shipping date (DateOrders)'])
