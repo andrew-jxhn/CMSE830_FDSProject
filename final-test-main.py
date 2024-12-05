@@ -16,22 +16,22 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import seaborn as sns
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import LabelEncoder
+# from sklearn.impute import SimpleImputer
+# from sklearn.preprocessing import LabelEncoder
 from datetime import datetime
-from sklearn.model_selection import train_test_split,cross_val_score, cross_val_predict
-from sklearn import svm,metrics,tree,preprocessing,linear_model
-from sklearn.preprocessing import MinMaxScaler,StandardScaler
-from sklearn.naive_bayes import GaussianNB
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.linear_model import Ridge,LinearRegression,LogisticRegression,ElasticNet, Lasso
-from sklearn.ensemble import RandomForestRegressor,RandomForestClassifier, GradientBoostingRegressor,BaggingClassifier,ExtraTreesClassifier
-from sklearn.metrics import accuracy_score,mean_squared_error,recall_score,confusion_matrix,f1_score,roc_curve, auc
-from sklearn.datasets import load_iris,make_regression
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
-from sklearn.kernel_ridge import KernelRidge
-from keras import Sequential
+# from sklearn.model_selection import train_test_split,cross_val_score, cross_val_predict
+# from sklearn import svm,metrics,tree,preprocessing,linear_model
+# from sklearn.preprocessing import MinMaxScaler,StandardScaler
+# from sklearn.naive_bayes import GaussianNB
+# from sklearn.neighbors import KNeighborsClassifier
+# from sklearn.tree import DecisionTreeRegressor
+# from sklearn.linear_model import Ridge,LinearRegression,LogisticRegression,ElasticNet, Lasso
+# from sklearn.ensemble import RandomForestRegressor,RandomForestClassifier, GradientBoostingRegressor,BaggingClassifier,ExtraTreesClassifier
+# from sklearn.metrics import accuracy_score,mean_squared_error,recall_score,confusion_matrix,f1_score,roc_curve, auc
+# from sklearn.datasets import load_iris,make_regression
+# from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
+# from sklearn.kernel_ridge import KernelRidge
+# from keras import Sequential
 import base64
 import time
 
