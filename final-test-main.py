@@ -63,7 +63,7 @@ set_background(pic)
 # load the data
 @st.cache_data
 def load_data():
-    file_path = r'C:\Users\1520a\OneDrive - vdl5d\Documents\cyberpy\DataCoSupplyChainDataset.csv'
+    file_path = r'https://raw.githubusercontent.com/andrew-jxhn/blank-app/main/DataCoSupplyChainDataset.csv'
     df = pd.read_csv(file_path, encoding='latin1')
     df['order date (DateOrders)'] = pd.to_datetime(df['order date (DateOrders)'])
     df['shipping date (DateOrders)'] = pd.to_datetime(df['shipping date (DateOrders)'])
