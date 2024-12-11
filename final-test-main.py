@@ -5,6 +5,12 @@ import seaborn as sns
 import xgboost as xgb
 import lightgbm as lgb
 import datetime as dt
+import calendar,warnings,itertools,matplotlib,keras,shutil
+# import tensorflow as tf
+# import statsmodels.api as sm
+# from keras.layers import Dense
+# from IPython.core import display as ICD
+# from tensorflow_core.estimator import inputs
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
@@ -13,6 +19,19 @@ import seaborn as sns
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import LabelEncoder
 from datetime import datetime
+from sklearn.model_selection import train_test_split,cross_val_score, cross_val_predict
+from sklearn import svm,metrics,tree,preprocessing,linear_model
+from sklearn.preprocessing import MinMaxScaler,StandardScaler
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.linear_model import Ridge,LinearRegression,LogisticRegression,ElasticNet, Lasso
+from sklearn.ensemble import RandomForestRegressor,RandomForestClassifier, GradientBoostingRegressor,BaggingClassifier,ExtraTreesClassifier
+from sklearn.metrics import accuracy_score,mean_squared_error,recall_score,confusion_matrix,f1_score,roc_curve, auc
+from sklearn.datasets import load_iris,make_regression
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
+from sklearn.kernel_ridge import KernelRidge
+from keras import Sequential
 import base64
 import time
 
@@ -111,6 +130,8 @@ if tabs == "Business":
             - *Regression models*: Lasso, Ridge, Light Gradient, Random Forest, eXtreme Gradient Boosting, Decision Tree, Linear Regression models are assessed with MAE and RMSE for sales and demand prediction.
         """)
         st.markdown("---") 
+        st.write("***Note:*** If you are a Business User - please head over to Business Side Bar, and if you are a Technology User looking for technical implementation, please head over to Technology Side Bar.")
+        st.markdown("---") 
         st.write("The original data is sourced from - [DataCo SMART SUPPLY CHAIN FOR BIG DATA ANALYSIS](https://data.mendeley.com/datasets/8gx2fvg2k6/5)")
     
     elif selected_page == "User Guide, Documentation & References":
@@ -140,36 +161,35 @@ if tabs == "Business":
         st.markdown("---") 
         st.subheader("Description of Models -")
         st.write("""
+                ### Classification Models
+                - **[Logistic Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html)**: A statistical model for binary classification. It estimates probabilities using a logistic function. Simple, interpretable, and supports numerical and categorical features.
+                - **[Gaussian Naive Bayes](https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html)**: A probabilistic classifier based on Bayes' theorem, assuming feature independence and normal distribution. Fast and effective for tasks like text classification and spam detection.
+                - **[Linear SVC](https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html)**: Finds the optimal hyperplane to separate classes. Suitable for high-dimensional data and complex decision boundaries in tasks like text categorization and image recognition.
+                - **[K-Nearest Neighbors (KNN)](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html)**: An instance-based learning algorithm that classifies based on the class of k nearest neighbors. Versatile for linear and non-linear decision boundaries.
+                - **[Linear Discriminant Analysis (LDA)](https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html)**: Combines features for maximum class separation. Works well for Gaussian-distributed data in applications like face recognition.
+                - **[Random Forest](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html)**: An ensemble of decision trees trained on random subsets. Handles numerical and categorical features well and is robust against overfitting.
+                - **[Extra Trees Classifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html)**: A variant of Random Forest with additional randomness in split selection, leading to faster training and improved performance on high-dimensional data.
+                - **[XGBoost](https://xgboost.readthedocs.io/en/stable/)**: A fast and scalable gradient boosting algorithm. Known for speed, robustness, and versatility across various tasks.
+                - **[Decision Trees](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html)**: Intuitive model using tree structures for predictions. Handles non-linear relationships and both numerical and categorical data effectively.
+                - **[Bagging](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html)**: An ensemble method that combines predictions from multiple weak learners (e.g., decision trees) to improve stability and accuracy.
 
-        ***Classification Models***
-        - Logistic Regression is a statistical model used for binary classification problems. It estimates the probability of an instance belonging to a particular class by using a logistic function to model the relationship between the predictor variables and the binary target variable. Logistic Regression is simple to implement, easy to interpret, and can handle both numerical and categorical features.
-        - Gaussian Naive Bayes is a probabilistic classifier based on Bayes' theorem that assumes the features are independent and normally distributed. It is a fast and efficient algorithm that can perform well on high-dimensional datasets, especially when the assumption of feature independence is met. Gaussian Naive Bayes is particularly useful for text classification, spam detection, and medical diagnosis problems.
-        - Linear SVC (Support Vector Classifier) is a discriminative classifier that finds the optimal hyperplane to separate classes by maximizing the margin between the hyperplane and the nearest data points of each class. It is effective at handling high-dimensional data and can identify complex decision boundaries, making it suitable for a variety of classification tasks, including text categorization, image recognition, and bioinformatics.
-        - K-Nearest Neighbors (KNN) is a non-parametric, instance-based learning algorithm that classifies an instance based on the class of its k nearest neighbors in the feature space. KNN is simple to implement, does not make any assumptions about the underlying data distribution, and is effective for both linear and non-linear decision boundaries, making it a versatile choice for classification problems.
-        - Linear Discriminant Analysis (LDA) is a dimensionality reduction and classification technique that finds the linear combination of features that best separates the classes. LDA assumes that the features follow a Gaussian distribution with equal covariance matrices for each class. It is effective for problems with normally distributed classes and can handle high-dimensional data, making it suitable for applications such as face recognition and document classification.
-        - Random Forest is an ensemble learning method that combines multiple decision trees to improve the overall predictive performance and robustness. It works by creating a large number of decision trees, each trained on a random subset of the data and features, and then aggregating the predictions of the individual trees to make the final classification. Random Forest is known for its ability to handle both numerical and categorical features, as well as its resistance to overfitting.
-        - Extra Trees Classifier is a variant of the Random Forest algorithm that introduces additional randomness by randomly selecting split points during the tree construction process. This added randomness can lead to faster training times and improved performance, especially for high-dimensional datasets with many irrelevant features.
-        - XGBoost (Extreme Gradient Boosting) is a highly efficient and scalable implementation of gradient boosting, a machine learning technique that combines multiple weak models (typically decision trees) to create a strong predictive model. It is known for its speed, robustness, and ability to handle a wide range of data types and problem scenarios, making it a popular choice for classification tasks.
-        - Decision Trees are a simple and intuitive classification algorithm that creates a model in the form of a tree structure, where each internal node represents a feature, each branch represents a decision rule, and each leaf node represents a predicted class. Decision Trees are easy to interpret, can handle both numerical and categorical features, and are effective at capturing non-linear relationships in the data.
-        - Bagging (Bootstrap Aggregating) is an ensemble learning technique that combines multiple weak learners (such as decision trees) to create a stronger, more robust classifier. It works by training multiple models on random subsets of the training data and then averaging or voting on the predictions of the individual models. Bagging can improve the stability and accuracy of the underlying weak learners, making it a useful technique for a variety of classification problems.
-        
-        ***Regression Models***
-        - Lasso (Least Absolute Shrinkage and Selection Operator) is a type of linear regression that performs feature selection by penalizing the absolute values of the coefficients, which can result in some coefficients being set to zero, effectively removing those features from the model. It is particularly useful when dealing with high-dimensional datasets with many predictors, as it can help identify the most important features.
-        - Ridge Regression is another type of linear regression that addresses the issue of multicollinearity by adding a penalty term to the model, which shrinks the coefficients towards zero but does not set them to exactly zero. It is useful when you have a large number of predictors, and you want to avoid overfitting by reducing the impact of less important features.
-        - LightGBM (Light Gradient Boosting Machine) is a gradient boosting framework that uses tree-based learning algorithms, which are efficient and can handle large-scale data and high-dimensional features. It is known for its speed, scalability, and ability to handle diverse data types, making it a popular choice for a wide range of regression and classification problems.
-        - Random Forest is an ensemble learning method that combines multiple decision trees to improve the overall predictive performance and reduce the risk of overfitting. It works by creating a large number of decision trees, each trained on a random subset of the data and features, and then averaging the predictions of the individual trees to make the final prediction.
-        - XGBoost (Extreme Gradient Boosting) is a highly efficient and scalable implementation of gradient boosting, a machine learning technique that combines multiple weak models (typically decision trees) to create a strong predictive model. It is known for its speed, robustness, and ability to handle a wide range of data types and problem scenarios, making it a popular choice for regression, classification, and ranking tasks.
-        - Decision Tree Regression is a simple and interpretable machine learning algorithm that creates a model in the form of a tree structure, where each internal node represents a feature, each branch represents a decision rule, and each leaf node represents a predicted value. It works by recursively partitioning the feature space and finding the best split points that minimize the error in the predictions.
-        - Linear Regression is a statistical method that models the relationship between a dependent variable and one or more independent variables using a linear equation. It is a widely used technique for predicting a continuous target variable based on the linear relationship between the predictor variables and the target variable.
+                ### Regression Models
+                - **[Lasso Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html)**: Adds a penalty to coefficients for feature selection, ideal for high-dimensional data.
+                - **[Ridge Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html)**: Shrinks coefficients to address multicollinearity, reducing overfitting in models with many predictors.
+                - **[LightGBM](https://lightgbm.readthedocs.io/en/latest/)**: A gradient boosting framework optimized for large-scale and high-dimensional data. Efficient and scalable.
+                - **[Random Forest Regression](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html)**: An ensemble method averaging predictions from multiple decision trees to improve accuracy and reduce overfitting.
+                - **[XGBoost Regression](https://xgboost.readthedocs.io/en/stable/)**: Combines weak models (e.g., decision trees) for strong predictive performance. Efficient and robust for diverse tasks.
+                - **[Decision Tree Regression](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html)**: Models data in a tree structure, finding splits that minimize prediction error. Simple and interpretable.
+                - **[Linear Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html)**: Models the linear relationship between independent variables and a continuous target variable. Widely used for predicting continuous outcomes.
+                """)
 
-        """)
 
         st.markdown("---")
         st.subheader("Documentation and References -")
         st.write("""
 
         - Constante, Fabian; Silva, Fernando; Pereira, António (2019), “DataCo SMART SUPPLY CHAIN FOR BIG DATA ANALYSIS”, Mendeley Data, V5, doi: 10.17632/8gx2fvg2k6.5
-        - GIF Image Credits - https://www.google.com/url?sa=i&url=https%3A%2F%2Fgifer.com%2Fen%2Fgifs%2Fwhite&psig=AOvVaw0Exqh5wzZ_glkkghB0M8QB&ust=1733268043013000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCIDMmPSciooDFQAAAAAdAAAAABAE
+        - [GIF Image Credits](https://www.google.com/url?sa=i&url=https%3A%2F%2Fgifer.com%2Fen%2Fgifs%2Fwhite&psig=AOvVaw0Exqh5wzZ_glkkghB0M8QB&ust=1733268043013000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCIDMmPSciooDFQAAAAAdAAAAABAE)
         - Background Image Credits - https://pinkerton.com/programs/supply-chain-risk-management
         - Jupyter to Streamlit - https://github.com/ddobrinskiy/streamlit-jupyter
         - Ahmed, N. K., Atiya, A. F., Gayar, N. E., & El-Shishiny, H. (2010). An Empirical Comparison of Machine Learning Models for Time Series Forecasting. Econometric Reviews, 29(5-6), 594–621.
@@ -535,6 +555,9 @@ if tabs == "Business":
                 How do these models compare to a neural network model in predicting order quantity?""")
                 st.write("""As we saw from the Modelling Metrics - The MAE and RMSE scores for the neural network models are 0.005 and 0.01, which are quite favorable. 
                 However, it is surprising that the Linear Regression and Decision Tree models achieved even lower MAE and RMSE scores.""")
+    
+    st.markdown("---")
+    st.write("For Modelling Information and the Technical Aspects, check out -> Professional of Technology -> Modelling Metrics or also check the ***[official code](https://github.com/andrew-jxhn/CMSE830_FDSProject/blob/main/CMSE%20830%20-%20IDA-EDA-Model.ipynb)***.")
 
 elif tabs == "Technology":
     selected_page = st.sidebar.selectbox("", ["IDA", "EDA", "Missingness Analysis", "Modelling Metrics"])
@@ -1642,6 +1665,9 @@ elif tabs == "Technology":
             else:
                 prediction_type = st.selectbox("Select Prediction Type", ["Order Quantity Prediction"])
             display_neural_network_metrics(selected_model_type, prediction_type)
+        st.markdown("---")
+        st.write("Check out the ***[official code](https://github.com/andrew-jxhn/CMSE830_FDSProject/blob/main/CMSE%20830%20-%20IDA-EDA-Model.ipynb)*** implementation, where you will see the complete IDA, EDA, Customer Segmentation Analysis, Modelling, and Feature Importance aspects.")
+
         st.markdown("---") 
         st.write("***P.S - Not taking Bagging Classifier into consideration, since it has no Feature Importance extracting properties. But it performs really well in comparison to other models.***")
 
