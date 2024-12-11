@@ -1,5 +1,5 @@
 
-# DataCo SMART SUPPLY CHAIN Analysis Dashboard
+# DataCo Smart Supply Chain Analytics Dashboard
 
 🚚🏭🏗️ Welcome to the **DataCo SMART SUPPLY CHAIN Analysis Dashboard**! This interactive Streamlit application provides insights into the **DataCo Smart Supply Chain** dataset, focusing on various aspects of supply chain performance.
 
