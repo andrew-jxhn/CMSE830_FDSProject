@@ -41,10 +41,19 @@ This project explores the **DataCo Smart Supply Chain** dataset to gain insights
 
 Use the sidebar to navigate between different sections of the app:
 
-- **Overview**: An overview of the project and its objectives.
-- **IDA**: Data cleaning and initial data analysis.
-- **EDA**: Exploratory data analysis with visualizations.
-- **Missingness Analysis**: Detailed insights into missing data.
+### **Professional of Business**
+- **Overview**: A summary of the project and its objectives.
+- **User Guide, Documentation & References**: Detailed project documentation and references.
+- **Customer Segmentation Analysis**: Insights into customer grouping and segmentation.
+- **Interactable EDA (β-version)**: Interactive exploratory data analysis.
+- **Modelling Results**: Results and evaluations of predictive models.
+
+### **Professional of Technology**
+- **IDA**: Initial Data Analysis and data cleaning.
+- **EDA**: Exploratory Data Analysis with visualizations.
+- **Missingness Analysis**: Insights into missing data patterns and handling.
+- **Modelling Metrics**: Detailed metrics and evaluation of models.
+
 <!--
 ## Installation
 
