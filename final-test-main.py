@@ -537,8 +537,8 @@ if tabs == "Business":
                 st.write("""As we saw from the Modelling Metrics - The MAE and RMSE scores for the neural network models are 0.005 and 0.01, which are quite favorable. 
                 However, it is surprising that the Linear Regression and Decision Tree models achieved even lower MAE and RMSE scores.""")
     
-    st.markdown("---")
-    st.write("For Modelling Information and the Technical Aspects, check out -> Professional of Technology -> Modelling Metrics or also check the ***[official code](https://github.com/andrew-jxhn/CMSE830_FDSProject/blob/main/CMSE%20830%20-%20IDA-EDA-Model.ipynb)***.")
+        st.markdown("---")
+        st.write("For Modelling Information and the Technical Aspects, check out -> Professional of Technology -> Modelling Metrics or also check the ***[official code](https://github.com/andrew-jxhn/CMSE830_FDSProject/blob/main/CMSE%20830%20-%20IDA-EDA-Model.ipynb)***.")
 
 elif tabs == "Technology":
     selected_page = st.sidebar.selectbox("", ["IDA", "EDA", "Missingness Analysis", "Modelling Metrics"])
