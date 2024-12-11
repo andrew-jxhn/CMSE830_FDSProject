@@ -68,8 +68,8 @@ To run this application locally, follow these steps:
 -->
 ## Usage
 
-Here you can find the Official App Link [Final Link for End Term] - https://cmse830project-aj-finals.streamlit.app/
-Here you can find the Prototype App Link [Final Link for Mid Term] - https://cmse830project-aj.streamlit.app/
+- Here you can find the Official App Link [Final Link for End Term] - https://cmse830project-aj-finals.streamlit.app/
+- Here you can find the Prototype App Link [Final Link for Mid Term] - https://cmse830project-aj.streamlit.app/
 
 Once the app is running, you can interact with it through your web browser. Navigate between sections using the sidebar to explore the data insights and visualizations.
 
